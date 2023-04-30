@@ -1,0 +1,12 @@
+.container{
+    margin: 8px;
+    padding: 8px;
+    background-color: black;
+    color: white;
+    border-radius: 2px;
+    max-width: 360px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+}
