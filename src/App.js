@@ -1,10 +1,10 @@
 import './App.css';
-import MenuComponent from "./MenuComponent/MenuComponent";
+import FileSystem from "./FileSystem/FileSystem";
 
 function App() {
   return (
     <div className="App">
-      <MenuComponent/>
+      <FileSystem/>
     </div>
   );
 }
