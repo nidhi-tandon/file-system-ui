@@ -1,4 +1,4 @@
-import {Fragment, ReactElement, ReactNode} from "react";
+import React, {Fragment, ReactElement, ReactNode} from "react";
 import './Menu.css';
 
 interface MenuProps {

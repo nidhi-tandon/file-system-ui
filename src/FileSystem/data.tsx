@@ -1,4 +1,5 @@
 import {FcFile, FcOpenedFolder} from "react-icons/fc";
+import React from 'react';
 
 export type Options = {
     label: string;
@@ -13,8 +14,8 @@ export const options: Options[] = [{
     value: {
         children: [
             {
-                label: 'App.js',
-                value: 'App.js',
+                label: 'App.ts',
+                value: 'App.ts',
                 icon: <FcFile/>
             },
             {

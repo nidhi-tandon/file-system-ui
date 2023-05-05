@@ -1,4 +1,4 @@
-import {ReactElement, ReactNode, useRef, useState, MouseEvent, LinkHTMLAttributes} from "react";
+import React, {ReactElement, ReactNode, useRef, useState, MouseEvent, LinkHTMLAttributes} from "react";
 
 interface MenuItemProps extends LinkHTMLAttributes<any> {
     children: ReactNode
@@ -11,8 +11,8 @@ export const MenuItem = ({children, ...props}: MenuItemProps): ReactElement => {
         event.preventDefault();
         event.stopPropagation();
 
-        let children: Element[] = Array.from(itemRef.current.children);
-        let childMenu = children.find((child) => child.classList.contains('menu'));
+        const children: Element[] = Array.from(itemRef.current.children);
+        const childMenu = children.find((child) => child.classList.contains('menu'));
         if (childMenu) {
             if (showChildren) {
                 childMenu.classList.remove('show');

@@ -2,6 +2,7 @@ import {Menu, MenuItem, MenuList} from "../components/Menu";
 import {useState, ReactElement} from "react";
 import './FileSystem.css';
 import {options, Options} from "./data";
+import React from 'react';
 
 const marginLeft = 2;
 let nestingLevel = 0;
