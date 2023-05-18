@@ -1,74 +1,72 @@
-import {Menu, MenuItem, MenuList} from "../components/Menu";
-import {useState, ReactElement} from "react";
+import React, {useState} from "react";
 import './FileSystem.css';
-import {options, Options} from "./data";
-import React from 'react';
+import {Option, options} from "./data";
+import InnerComponent from "./InnerComponent";
 
-const marginLeft = 2;
 let nestingLevel = 0;
 
-interface InnerComponentProps {
-    open: boolean;
-    options: Options[]
-}
-
-type GetMarginLeftProps = {
-    marginLeft: number;
-    nestingLevel: number
-}
-
-const getMarginLeft = ({marginLeft, nestingLevel}: GetMarginLeftProps): string => {
-    return `${marginLeft + (marginLeft * (nestingLevel + 1))}px`;
-}
 
 const FileSystem = () => {
     const [open, setOpen] = useState(true);
+    const [data, setData] = useState(options);
 
     const handleOnClick = () => {
         setOpen(prevState => !prevState);
         nestingLevel = 0
     }
 
+    const handleRename = ({item, newValue}: { item: Option, newValue: string }): void => {
+        let updatedData: Option[] = [...data];
+        if (newValue.length > 0) {
+            updatedData = updatedData.map((el: Option) => {
+                    if (el.id === item.id) {
+                        el.value = newValue;
+                    } else if (el.children) {
+                        el.children = el.children.map((child: Option) => {
+                            if (child.id === item.id) {
+                                child.value = newValue
+                            }
+                            return child;
+                        })
+                    }
+                    return el;
+                }
+            )
+        }
+        setData(updatedData);
+    }
+
+    const handleAddFileFolder = ({parentItem, newItem}: { parentItem: Option, newItem: Option }): void => {
+        let updatedData: Option[] = [...data];
+        updatedData = updatedData.map((el: Option) => {
+                if (el.id === parentItem.id) {
+                    el.children = [...el.children, newItem];
+                } else if (el.children) {
+                    el.children = el.children.map((child: Option) => {
+                        if (child.id === parentItem.id) {
+                            child.children = [...child.children, newItem];
+                        }
+                        return child;
+                    })
+                }
+                return el;
+            }
+        )
+        setData(updatedData);
+
+    }
+
     return (
         <div className="container">
             <button onClick={handleOnClick}>View</button>
-            <InnerComponent open={open} options={options}/>
+            <InnerComponent open={open}
+                            options={data}
+                            nestingLevel={nestingLevel}
+                            handleRename={handleRename}
+                            handleAddFileFolder={handleAddFileFolder}/>
         </div>
     )
 }
 
-
-const InnerComponent = ({open, options}: InnerComponentProps): ReactElement => {
-    return (
-        <Menu open={open}>
-            <MenuList>
-                {options.map((item) => {
-                    if (item?.value && typeof item.value !== 'string') {
-                        const children: Options[] = item.value.children;
-                        nestingLevel = nestingLevel + 1;
-                        return (
-                            <MenuItem key={item.label} style={{
-                                marginLeft: getMarginLeft({marginLeft, nestingLevel}),
-                            }}>
-                                {item.icon}
-                                {item.label}
-                                <InnerComponent open={open} options={children}/>
-                            </MenuItem>
-                        )
-                    } else {
-                        return (
-                            <MenuItem key={item.label}
-                                      style={{marginLeft: getMarginLeft({marginLeft, nestingLevel})}}>
-                                {item.icon}
-                                {item.label}
-                            </MenuItem>
-                        )
-                    }
-                })
-                }
-            </MenuList>
-        </Menu>
-    )
-}
 
 export default FileSystem;

@@ -1,49 +1,57 @@
 import {FcFile, FcOpenedFolder} from "react-icons/fc";
 import React from 'react';
+import {v4 as uuidv4} from "uuid";
 
-export type Options = {
-    label: string;
+export type Option = {
+    value: string;
     icon: JSX.Element;
-    value:  {
-        children: Options[]
-    } | string;
+    id: string
+    children?: Option[]
+    type: string
 }
-export const options: Options[] = [{
-    label: 'src',
+
+export const types = {
+    FILE: 'FILE',
+    FOLDER: 'FOLDER'
+}
+export const options: Option[] = [{
+    value: 'src',
     icon: <FcOpenedFolder/>,
-    value: {
-        children: [
-            {
-                label: 'App.ts',
-                value: 'App.ts',
-                icon: <FcFile/>
-            },
-            {
-                label: 'App.css',
-                value: 'App.css',
-                icon: <FcFile/>
-            },
-            {
-                label: 'Components',
-                icon: <FcOpenedFolder/>,
-                value: {
+    id: uuidv4(),
+    type: types.FOLDER,
+    children: [
+        {
+            value: 'App.ts',
+            icon: <FcFile/>,
+            id: uuidv4(),
+            type: types.FILE,
+        },
+        {
+            value: 'App.css',
+            icon: <FcFile/>,
+            id: uuidv4(),
+            type: types.FILE,
+        },
+        {
+            value: 'Components',
+            icon: <FcOpenedFolder/>,
+            id: uuidv4(),
+            type: types.FOLDER,
+            children: [
+                {
+                    value: 'Menu',
+                    icon: <FcOpenedFolder/>,
+                    id: uuidv4(),
+                    type: types.FOLDER,
                     children: [
                         {
-                            label: 'Menu',
-                            icon: <FcOpenedFolder/>,
-                            value: {
-                                children: [
-                                    {
-                                        label: 'Menu.ts',
-                                        value: 'Menu.ts',
-                                        icon: <FcFile/>
-                                    }
-                                ]
-                            }
+                            value: 'Menu.ts',
+                            icon: <FcFile/>,
+                            id: uuidv4(),
+                            type: types.FILE,
                         }
                     ]
-                }
-            }
-        ]
-    }
+                },
+            ],
+        }]
 }]

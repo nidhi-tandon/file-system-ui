@@ -1,4 +1,4 @@
-.container{
+.container {
     margin: 8px;
     padding: 8px;
     background-color: black;
@@ -9,4 +9,36 @@
     justify-content: flex-start;
     align-items: flex-start;
     flex-direction: column;
+}
+
+.menu {
+    width: 100%;
+}
+
+.item {
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid transparent;
+    padding: 4px 4px 0 4px;
+}
+
+.item:hover {
+    border: 1px solid rgb(81 79 79 / 80%);
+}
+
+.item:hover > .actions {
+    display: flex;
+}
+
+.actions {
+    justify-content: center;
+    align-items: center;
+    display: none;
+}
+
+input {
+    background-color: black;
+    box-shadow: none;
+    border: 1px solid lightslategray;
+    color: white;
 }
