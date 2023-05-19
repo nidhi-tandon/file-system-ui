@@ -10,7 +10,6 @@ import {v4 as uuidv4} from "uuid";
 const marginLeft = 2;
 
 interface InnerComponentProps {
-    open: boolean;
     options: Option[]
     nestingLevel: number
     handleRename: ({item, newItem}: { item: Option, newItem: Option }) => void;
@@ -18,7 +17,6 @@ interface InnerComponentProps {
 }
 
 const InnerComponent = ({
-                            open,
                             options,
                             nestingLevel,
                             handleRename,
@@ -58,30 +56,30 @@ const InnerComponent = ({
     }
 
     return (
-        <Menu open={open}>
+        <Menu open>
             <MenuList>
                 {options.map((item) => {
                     const children: Option[] = item.children;
                     if (children) {
                         nestingLevel = nestingLevel + 1;
                         return (
-                            <MenuItem key={item.value} style={{
+                            <MenuItem key={item.id} style={{
                                 marginLeft: getMarginLeft({marginLeft, nestingLevel}),
                             }}>
                                 <Item item={item}
                                       handleFile={() => handleFileOnClick(item)}
                                       handleFolder={() => handleFolderOnClick(item)}
                                       handleRename={(newItem) => handleRenameOnClick(item, newItem)}/>
-                                <InnerComponent open={open}
-                                                options={children}
-                                                nestingLevel={nestingLevel}
-                                                handleRename={handleRename}
-                                                handleAddFileFolder={handleAddFileFolder}/>
+                                <InnerComponent
+                                    options={children}
+                                    nestingLevel={nestingLevel}
+                                    handleRename={handleRename}
+                                    handleAddFileFolder={handleAddFileFolder}/>
                             </MenuItem>
                         )
                     } else {
                         return (
-                            <MenuItem key={item.value}
+                            <MenuItem key={item.id}
                                       style={{marginLeft: getMarginLeft({marginLeft, nestingLevel})}}>
                                 <Item item={item}
                                       handleFile={() => handleFileOnClick(item)}
