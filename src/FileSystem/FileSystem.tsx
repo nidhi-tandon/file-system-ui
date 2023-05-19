@@ -15,45 +15,44 @@ const FileSystem = () => {
         nestingLevel = 0
     }
 
-    const handleRename = ({item, newValue}: { item: Option, newValue: string }): void => {
-        let updatedData: Option[] = [...data];
-        if (newValue.length > 0) {
-            updatedData = updatedData.map((el: Option) => {
-                    if (el.id === item.id) {
-                        el.value = newValue;
-                    } else if (el.children) {
-                        el.children = el.children.map((child: Option) => {
-                            if (child.id === item.id) {
-                                child.value = newValue
-                            }
-                            return child;
-                        })
-                    }
-                    return el;
+    const updateItem = ({data, item, newItem}: { data: Option[], item: Option, newItem: Option }): Option[] => {
+        return data.map((element: Option): Option => {
+            if (element.id === item.id) {
+                element = newItem;
+            } else if (element.children) {
+                element.children = updateItem({data: element.children, item, newItem})
+            }
+            return element;
+        })
+    }
+
+    const addChildren = ({data, item, newItem}: { data: Option[], item: Option, newItem: Option }): Option[] => {
+        return data.map((el: Option): Option => {
+            if (el.id === item.id) {
+                if (el.children) {
+                    el.children = [...el.children, newItem];
+                } else {
+                    el.children = [newItem];
                 }
-            )
+            } else if (el.children) {
+                el.children = addChildren({data: el.children, item, newItem})
+            }
+            return el;
+        })
+    }
+
+    const handleRename = ({item, newItem}: { item: Option, newItem: Option }): void => {
+        let updatedData: Option[] = [...data];
+        if (newItem.value.length > 0) {
+            updatedData = updateItem({data: updatedData, item, newItem})
         }
         setData(updatedData);
     }
 
     const handleAddFileFolder = ({parentItem, newItem}: { parentItem: Option, newItem: Option }): void => {
         let updatedData: Option[] = [...data];
-        updatedData = updatedData.map((el: Option) => {
-                if (el.id === parentItem.id) {
-                    el.children = [...el.children, newItem];
-                } else if (el.children) {
-                    el.children = el.children.map((child: Option) => {
-                        if (child.id === parentItem.id) {
-                            child.children = [...child.children, newItem];
-                        }
-                        return child;
-                    })
-                }
-                return el;
-            }
-        )
+        updatedData = addChildren({data: updatedData, item: parentItem, newItem})
         setData(updatedData);
-
     }
 
     return (

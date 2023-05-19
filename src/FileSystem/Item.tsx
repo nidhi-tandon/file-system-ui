@@ -1,14 +1,15 @@
 import {MdModeEditOutline, MdOutlineFolder, MdOutlineTextSnippet} from "react-icons/md";
-import React, {ChangeEvent, MouseEvent, FocusEvent, useState, FormEvent} from "react";
+import React, {ChangeEvent, FocusEvent, FormEvent, MouseEvent, useState} from "react";
 import {Option, types} from "./data";
 
 interface ItemProps {
-    item : Option;
-    handleRename?: (value?: string) => void;
+    item: Option;
+    handleRename?: (item: Option) => void;
     handleFile?: () => void;
     handleFolder?: () => void;
 
 }
+
 const Item = ({item, handleRename, handleFile, handleFolder}: ItemProps) => {
     const [inputVal, setInputVal] = useState(item.value);
     const [isEditMode, setIsEditMode] = useState(false);
@@ -35,13 +36,15 @@ const Item = ({item, handleRename, handleFile, handleFolder}: ItemProps) => {
     const handleOnBlur = (e: FocusEvent<HTMLInputElement>) => {
         e.stopPropagation();
         setIsEditMode(false);
-        handleRename(inputVal);
+        item.value = inputVal;
+        handleRename(item);
     }
 
     const handleOnSubmit = (e: FormEvent) => {
         e.preventDefault();
         setIsEditMode(false);
-        handleRename(inputVal);
+        item.value = inputVal;
+        handleRename(item);
     }
 
     return (
@@ -51,8 +54,8 @@ const Item = ({item, handleRename, handleFile, handleFolder}: ItemProps) => {
                 {item.value === "" || isEditMode ?
                     <form onSubmit={handleOnSubmit} style={{display: "inline-block"}}>
                         <input value={inputVal}
-                               onChange={(e) => handleInputOnChange(e)}
-                               onBlur={(e) => handleOnBlur(e)}
+                               onChange={handleInputOnChange}
+                               onBlur={handleOnBlur}
                                autoFocus/>
                     </form> :
                     item.value
@@ -60,13 +63,13 @@ const Item = ({item, handleRename, handleFile, handleFolder}: ItemProps) => {
             </div>
             <div className="actions">
                 {handleRename &&
-                    <MdModeEditOutline onClick={(e) => handleRenameOnClick(e)}/>
+                    <MdModeEditOutline onClick={handleRenameOnClick}/>
                 }
                 {handleFile && item.type === types.FOLDER &&
-                    <MdOutlineTextSnippet onClick={(e) => handleAddFileOnClick(e)}/>
+                    <MdOutlineTextSnippet onClick={handleAddFileOnClick}/>
                 }
                 {handleFolder && item.type === types.FOLDER &&
-                    <MdOutlineFolder onClick={(e) => handleAddFolderOnClick(e)}/>
+                    <MdOutlineFolder onClick={handleAddFolderOnClick}/>
                 }
             </div>
         </div>

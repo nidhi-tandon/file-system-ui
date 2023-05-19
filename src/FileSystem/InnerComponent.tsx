@@ -8,13 +8,15 @@ import {v4 as uuidv4} from "uuid";
 
 
 const marginLeft = 2;
+
 interface InnerComponentProps {
     open: boolean;
     options: Option[]
     nestingLevel: number
-    handleRename: ({item, newValue}: { item: Option, newValue: string }) => void;
+    handleRename: ({item, newItem}: { item: Option, newItem: Option }) => void;
     handleAddFileFolder: ({parentItem, newItem}: { parentItem: Option, newItem: Option }) => void;
 }
+
 const InnerComponent = ({
                             open,
                             options,
@@ -24,12 +26,10 @@ const InnerComponent = ({
                         }: InnerComponentProps): ReactElement => {
 
     const handleRenameOnClick = (
-        value: string | undefined,
-        item: Option
+        item: Option,
+        newItem: Option
     ) => {
-        if (value) {
-            handleRename({item, newValue: value});
-        }
+        handleRename({item, newItem});
     }
 
     const handleFileOnClick = (parentItem: Option) => {
@@ -71,7 +71,7 @@ const InnerComponent = ({
                                 <Item item={item}
                                       handleFile={() => handleFileOnClick(item)}
                                       handleFolder={() => handleFolderOnClick(item)}
-                                      handleRename={(value) => handleRenameOnClick(value, item)}/>
+                                      handleRename={(newItem) => handleRenameOnClick(item, newItem)}/>
                                 <InnerComponent open={open}
                                                 options={children}
                                                 nestingLevel={nestingLevel}
@@ -86,7 +86,7 @@ const InnerComponent = ({
                                 <Item item={item}
                                       handleFile={() => handleFileOnClick(item)}
                                       handleFolder={() => handleFolderOnClick(item)}
-                                      handleRename={(value) => handleRenameOnClick(value, item)}/>
+                                      handleRename={(newItem) => handleRenameOnClick(item, newItem)}/>
                             </MenuItem>
                         )
                     }
