@@ -25,3 +25,9 @@ You may also see any lint errors in the console.
 Refer to the below video for a head start: 
 
 
+
+
+https://github.com/nidhi-tandon/file-system-ui/assets/6941627/e0c0b302-6c97-4109-a965-273b349c3123
+
+
+
