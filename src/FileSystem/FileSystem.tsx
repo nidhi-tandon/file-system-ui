@@ -12,6 +12,7 @@ const FileSystem = () => {
 
     const handleRename = ({item, newItem}: { item: Option, newItem: Option }): void => {
         let updatedData: Option[] = [...data];
+        // trim to remove all empty spaces from the value
         if (newItem.value.trim().length > 0) {
             updatedData = updateItem({data: updatedData, item, newItem})
         } else {

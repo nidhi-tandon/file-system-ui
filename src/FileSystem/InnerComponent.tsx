@@ -31,6 +31,11 @@ const InnerComponent = ({
     }
 
     const handleFileOnClick = (parentItem: Option) => {
+        // Check if empty file already exists
+        if(parentItem.children) {
+            if (parentItem.children?.find(el => el.value === "" && el.type === types.FILE)) return;
+        }
+
         if (parentItem?.id) {
             const newFile: Option = {
                 icon: <FcFile/>,
@@ -44,6 +49,11 @@ const InnerComponent = ({
 
 
     const handleFolderOnClick = (parentItem: Option) => {
+        // Check if empty folder already exists
+        if(parentItem.children) {
+            if (parentItem?.children?.find(el => el.value === "" && el.type === types.FOLDER)) return;
+        }
+
         if (parentItem?.id) {
             const newFolder: Option = {
                 icon: <FcOpenedFolder/>,

@@ -42,3 +42,7 @@ input {
     border: 1px solid lightslategray;
     color: white;
 }
+
+form {
+    display: inline-flex;
+}

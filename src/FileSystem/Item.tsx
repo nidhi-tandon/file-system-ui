@@ -1,6 +1,7 @@
 import {MdModeEditOutline, MdOutlineFolder, MdOutlineTextSnippet} from "react-icons/md";
 import React, {ChangeEvent, FocusEvent, FormEvent, MouseEvent, useState} from "react";
 import {Option, types} from "./data";
+import './FileSystem.css';
 
 interface ItemProps {
     item: Option;
@@ -52,7 +53,7 @@ const Item = ({item, handleRename, handleFile, handleFolder}: ItemProps) => {
             <div>
                 {item.icon}
                 {item.value === "" || isEditMode ?
-                    <form onSubmit={handleOnSubmit} style={{display: "inline-block"}}>
+                    <form onSubmit={handleOnSubmit}>
                         <input value={inputVal}
                                onChange={handleInputOnChange}
                                onBlur={handleOnBlur}

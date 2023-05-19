@@ -9,6 +9,13 @@ export const getMarginLeft = ({marginLeft, nestingLevel}: GetMarginLeftProps): s
 }
 
 
+/**
+ * Update the item (value update in this case)
+ * Works for n-level nesting
+ * @param data
+ * @param item
+ * @param newItem
+ */
 export const updateItem = ({data, item, newItem}: { data: Option[], item: Option, newItem: Option }): Option[] => {
     return data.map((element: Option): Option => {
         if (element.id === item.id) {
@@ -20,6 +27,13 @@ export const updateItem = ({data, item, newItem}: { data: Option[], item: Option
     })
 }
 
+/**
+ * Add child element to the parent based on id matching
+ * Works for n-level nesting
+ * @param data
+ * @param item
+ * @param newItem
+ */
 export const addChildren = ({data, item, newItem}: { data: Option[], item: Option, newItem: Option }): Option[] => {
     return data.map((el: Option): Option => {
         if (el.id === item.id) {
@@ -35,8 +49,14 @@ export const addChildren = ({data, item, newItem}: { data: Option[], item: Optio
     })
 }
 
+/**
+ * Function to remove all empty values from the array
+ * @param data
+ */
 export const runDataCleanUp = (data: Option[]): Option[] => {
     return data.filter((element: Option): boolean => {
+        // bottom-up approach
+        // check all leaf nodes and then reach to the parent element
         if (element.children) {
             element.children = runDataCleanUp(element.children)
         }
