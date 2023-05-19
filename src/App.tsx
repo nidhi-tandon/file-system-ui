@@ -1,4 +1,3 @@
-import './App.css';
 import FileSystem from "./FileSystem/";
 import React from 'react';
 
