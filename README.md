@@ -15,13 +15,17 @@ The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
 ## Functionality 
-1. A simple folder structure with pre-defined data
-2. Add a new folder inside a folder 
-3. Add a new file inside a folder 
-4. Rename any file 
-5. Retains folder collapsed state 
+1. A simple folder structure with pre-defined data 🗃️
+2. Add a new folder inside a folder 🗂️
+3. Add a new file inside a folder 📁
+4. Rename any file  ✍️ 
+5. Retains folder collapsed state 🧠
 
 
-Refer to the below video for a head start: 
+&nbsp;
+
+
+https://github.com/nidhi-tandon/file-system-ui/assets/6941627/e0c0b302-6c97-4109-a965-273b349c3123
+
 
 
