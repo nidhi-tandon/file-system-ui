@@ -1,18 +1,25 @@
-import React, {ReactElement, useMemo, useState} from "react";
-import {Option, types} from "./data";
-import {Menu, MenuItem, MenuList} from "../components/Menu";
-import {getMarginLeft} from "./utils";
-import Item from "./Item";
+import React, {ComponentProps, ReactElement, useMemo, useState} from "react";
+import {Option, types} from "../data";
+import {Menu, MenuItem, MenuList} from "../../components/Menu";
+import {getMarginLeft} from "../utils";
+import Item from "../Item";
 import {v4 as uuidv4} from "uuid";
+import './FileTree.css';
 
-interface InnerComponentProps {
+interface InnerComponentProps extends ComponentProps<"div"> {
     options: Option[]
     nestingLevel: number
     handleRename: ({item, newItem}: { item: Option, newItem: Option }) => void;
     handleAddFileFolder: ({parentItem, newItem}: { parentItem: Option, newItem: Option }) => void;
 }
 
-const FileTree = ({options, nestingLevel, handleRename, handleAddFileFolder}: InnerComponentProps): ReactElement => {
+const FileTree = ({
+                      options,
+                      nestingLevel,
+                      handleRename,
+                      handleAddFileFolder,
+                      ...props
+                  }: InnerComponentProps): ReactElement => {
 
     const [showNestedMenu, setShowNestedMenu] = useState(true);
 
@@ -63,7 +70,7 @@ const FileTree = ({options, nestingLevel, handleRename, handleAddFileFolder}: In
     const marginLeft = useMemo(() => getMarginLeft(nestingLevel), []);
 
     return (
-        <Menu>
+        <Menu {...props}>
             <MenuList>
                 {options.map((item) => {
                     const children: Option[] = item.children;
@@ -77,13 +84,12 @@ const FileTree = ({options, nestingLevel, handleRename, handleAddFileFolder}: In
                                       handleFile={() => onClickFileIcon(item)}
                                       handleFolder={() => onClickFolderIcon(item)}
                                       handleRename={(newItem) => onClickRenameIcon(item, newItem)}/>
-                                {showNestedMenu &&
-                                    <FileTree
-                                        options={children}
-                                        nestingLevel={nestingLevel}
-                                        handleRename={handleRename}
-                                        handleAddFileFolder={handleAddFileFolder}/>
-                                }
+                                <FileTree
+                                    className={showNestedMenu ? "show" : "hide"}
+                                    options={children}
+                                    nestingLevel={nestingLevel}
+                                    handleRename={handleRename}
+                                    handleAddFileFolder={handleAddFileFolder}/>
                             </MenuItem>
                         )
                     } else {

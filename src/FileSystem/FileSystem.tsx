@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import './FileSystem.css';
 import {Option, options} from "./data";
-import FileTree from "./FileTree";
+import FileTree from "./FileTree/FileTree";
 import {updateItem, addChildren, runDataCleanUp} from "./utils";
 
 const nestingLevel = 0;
