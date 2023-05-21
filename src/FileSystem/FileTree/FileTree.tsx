@@ -85,6 +85,9 @@ const FileTree = ({
                                       handleFolder={() => onClickFolderIcon(item)}
                                       handleRename={(newItem) => onClickRenameIcon(item, newItem)}/>
                                 <FileTree
+                                    // handle show/hide via className vs unmount/mount component
+                                    // to avoid re-render and resetting of showNestedMenu state
+                                    // for n-level nesting
                                     className={showNestedMenu ? "show" : "hide"}
                                     options={children}
                                     nestingLevel={nestingLevel}
