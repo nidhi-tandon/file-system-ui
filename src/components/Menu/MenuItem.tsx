@@ -1,32 +1,21 @@
-import React, {ReactElement, ReactNode, useRef, useState, MouseEvent, LinkHTMLAttributes} from "react";
+import React, {ReactElement, ReactNode, MouseEvent, LinkHTMLAttributes} from "react";
 
 interface MenuItemProps extends LinkHTMLAttributes<any> {
-    children: ReactNode
+    children: ReactNode;
+    onClick?: () => void;
 }
 
-export const MenuItem = ({children, ...props}: MenuItemProps): ReactElement => {
-    const [showChildren, setShowChildren] = useState(true);
-    const itemRef = useRef<HTMLLIElement>(null);
+export const MenuItem = ({children, onClick, ...props}: MenuItemProps): ReactElement => {
     const handleOnClick = (event: MouseEvent<HTMLLIElement>): void => {
         event.preventDefault();
         event.stopPropagation();
-
-        const children: Element[] = Array.from(itemRef.current.children);
-        const childMenu = children.find((child) => child.classList.contains('menu'));
-        if (childMenu) {
-            if (showChildren) {
-                childMenu.classList.remove('show');
-                childMenu.classList.add('hide');
-            } else {
-                childMenu.classList.remove('hide');
-                childMenu.classList.add('show');
-            }
+        if (onClick) {
+            onClick();
         }
-        setShowChildren(prev => !prev);
     }
 
     return (
-        <li {...props} onClick={handleOnClick} ref={itemRef}>
+        <li {...props} onClick={handleOnClick}>
             {children}
         </li>
     )
