@@ -31,6 +31,8 @@ const FileTree = ({
     }
 
     const onClickFileIcon = (parentItem: Option) => {
+        setShowNestedMenu(true);
+
         // Check if empty file already exists
         if (parentItem.children) {
             if (parentItem.children?.find(el => el.value === "" && el.type === types.FILE)) return;
@@ -48,6 +50,8 @@ const FileTree = ({
 
 
     const onClickFolderIcon = (parentItem: Option) => {
+        setShowNestedMenu(true);
+
         // Check if empty folder already exists
         if (parentItem.children) {
             if (parentItem?.children?.find(el => el.value === "" && el.type === types.FOLDER)) return;
