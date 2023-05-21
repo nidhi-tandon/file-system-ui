@@ -1,11 +1,9 @@
 import {Option} from "./data";
 
-type GetMarginLeftProps = {
-    marginLeft: number;
-    nestingLevel: number
-}
-export const getMarginLeft = ({marginLeft, nestingLevel}: GetMarginLeftProps): string => {
-    return `${marginLeft + (marginLeft * (nestingLevel + 1))}px`;
+const defaultMarginLeft = 2;
+
+export const getMarginLeft = (nestingLevel: number): string => {
+    return `${defaultMarginLeft + (defaultMarginLeft * (nestingLevel + 1))}px`;
 }
 
 
@@ -31,19 +29,23 @@ export const updateItem = ({data, item, newItem}: { data: Option[], item: Option
  * Add child element to the parent based on id matching
  * Works for n-level nesting
  * @param data
- * @param item
+ * @param parentItem
  * @param newItem
  */
-export const addChildren = ({data, item, newItem}: { data: Option[], item: Option, newItem: Option }): Option[] => {
+export const addChildren = ({
+                                data,
+                                parentItem,
+                                newItem
+                            }: { data: Option[], parentItem: Option, newItem: Option }): Option[] => {
     return data.map((el: Option): Option => {
-        if (el.id === item.id) {
+        if (el.id === parentItem.id) {
             if (el.children) {
                 el.children = [...el.children, newItem];
             } else {
                 el.children = [newItem];
             }
         } else if (el.children) {
-            el.children = addChildren({data: el.children, item, newItem})
+            el.children = addChildren({data: el.children, parentItem, newItem})
         }
         return el;
     })

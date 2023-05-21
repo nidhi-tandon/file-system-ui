@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import './FileSystem.css';
 import {Option, options} from "./data";
-import InnerComponent from "./InnerComponent";
+import FileTree from "./FileTree";
 import {updateItem, addChildren, runDataCleanUp} from "./utils";
 
 const nestingLevel = 0;
@@ -11,25 +11,25 @@ const FileSystem = () => {
     const [data, setData] = useState(options);
 
     const handleRename = ({item, newItem}: { item: Option, newItem: Option }): void => {
-        let updatedData: Option[] = [...data];
+        let updatedData: Option[];
         // trim to remove all empty spaces from the value
         if (newItem.value.trim().length > 0) {
-            updatedData = updateItem({data: updatedData, item, newItem})
+            updatedData = updateItem({data, item, newItem})
         } else {
-            updatedData = runDataCleanUp(updatedData);
+            // remove all empty values from state
+            updatedData = runDataCleanUp(data);
         }
         setData(updatedData);
     }
 
     const handleAddFileFolder = ({parentItem, newItem}: { parentItem: Option, newItem: Option }): void => {
-        let updatedData: Option[] = [...data];
-        updatedData = addChildren({data: updatedData, item: parentItem, newItem})
+        const updatedData: Option[] = addChildren({data, parentItem, newItem})
         setData(updatedData);
     }
 
     return (
         <div className="container">
-            <InnerComponent
+            <FileTree
                 options={data}
                 nestingLevel={nestingLevel}
                 handleRename={handleRename}

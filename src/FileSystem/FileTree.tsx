@@ -1,13 +1,9 @@
-import React, {ReactElement} from "react";
+import React, {ReactElement, useMemo, useState} from "react";
 import {Option, types} from "./data";
-import {FcFile, FcOpenedFolder} from "react-icons/fc";
 import {Menu, MenuItem, MenuList} from "../components/Menu";
 import {getMarginLeft} from "./utils";
 import Item from "./Item";
 import {v4 as uuidv4} from "uuid";
-
-
-const marginLeft = 2;
 
 interface InnerComponentProps {
     options: Option[]
@@ -16,29 +12,25 @@ interface InnerComponentProps {
     handleAddFileFolder: ({parentItem, newItem}: { parentItem: Option, newItem: Option }) => void;
 }
 
-const InnerComponent = ({
-                            options,
-                            nestingLevel,
-                            handleRename,
-                            handleAddFileFolder
-                        }: InnerComponentProps): ReactElement => {
+const FileTree = ({options, nestingLevel, handleRename, handleAddFileFolder}: InnerComponentProps): ReactElement => {
 
-    const handleRenameOnClick = (
+    const [showNestedMenu, setShowNestedMenu] = useState(true);
+
+    const onClickRenameIcon = (
         item: Option,
         newItem: Option
     ) => {
         handleRename({item, newItem});
     }
 
-    const handleFileOnClick = (parentItem: Option) => {
+    const onClickFileIcon = (parentItem: Option) => {
         // Check if empty file already exists
-        if(parentItem.children) {
+        if (parentItem.children) {
             if (parentItem.children?.find(el => el.value === "" && el.type === types.FILE)) return;
         }
 
         if (parentItem?.id) {
             const newFile: Option = {
-                icon: <FcFile/>,
                 value: "",
                 id: uuidv4(),
                 type: types.FILE,
@@ -48,15 +40,14 @@ const InnerComponent = ({
     }
 
 
-    const handleFolderOnClick = (parentItem: Option) => {
+    const onClickFolderIcon = (parentItem: Option) => {
         // Check if empty folder already exists
-        if(parentItem.children) {
+        if (parentItem.children) {
             if (parentItem?.children?.find(el => el.value === "" && el.type === types.FOLDER)) return;
         }
 
         if (parentItem?.id) {
             const newFolder: Option = {
-                icon: <FcOpenedFolder/>,
                 value: "",
                 id: uuidv4(),
                 type: types.FOLDER,
@@ -65,36 +56,44 @@ const InnerComponent = ({
         }
     }
 
+    const onClickMenuItem = () => {
+        setShowNestedMenu(prev => !prev);
+    }
+
+    const marginLeft = useMemo(() => getMarginLeft(nestingLevel), []);
+
     return (
-        <Menu open>
+        <Menu>
             <MenuList>
                 {options.map((item) => {
                     const children: Option[] = item.children;
                     if (children) {
                         nestingLevel = nestingLevel + 1;
                         return (
-                            <MenuItem key={item.id} style={{
-                                marginLeft: getMarginLeft({marginLeft, nestingLevel}),
-                            }}>
+                            <MenuItem key={item.id}
+                                      onClick={onClickMenuItem}
+                                      style={{marginLeft}}>
                                 <Item item={item}
-                                      handleFile={() => handleFileOnClick(item)}
-                                      handleFolder={() => handleFolderOnClick(item)}
-                                      handleRename={(newItem) => handleRenameOnClick(item, newItem)}/>
-                                <InnerComponent
-                                    options={children}
-                                    nestingLevel={nestingLevel}
-                                    handleRename={handleRename}
-                                    handleAddFileFolder={handleAddFileFolder}/>
+                                      handleFile={() => onClickFileIcon(item)}
+                                      handleFolder={() => onClickFolderIcon(item)}
+                                      handleRename={(newItem) => onClickRenameIcon(item, newItem)}/>
+                                {showNestedMenu &&
+                                    <FileTree
+                                        options={children}
+                                        nestingLevel={nestingLevel}
+                                        handleRename={handleRename}
+                                        handleAddFileFolder={handleAddFileFolder}/>
+                                }
                             </MenuItem>
                         )
                     } else {
                         return (
                             <MenuItem key={item.id}
-                                      style={{marginLeft: getMarginLeft({marginLeft, nestingLevel})}}>
+                                      style={{marginLeft}}>
                                 <Item item={item}
-                                      handleFile={() => handleFileOnClick(item)}
-                                      handleFolder={() => handleFolderOnClick(item)}
-                                      handleRename={(newItem) => handleRenameOnClick(item, newItem)}/>
+                                      handleFile={() => onClickFileIcon(item)}
+                                      handleFolder={() => onClickFolderIcon(item)}
+                                      handleRename={(newItem) => onClickRenameIcon(item, newItem)}/>
                             </MenuItem>
                         )
                     }
@@ -106,4 +105,4 @@ const InnerComponent = ({
 }
 
 
-export default InnerComponent;
+export default FileTree;

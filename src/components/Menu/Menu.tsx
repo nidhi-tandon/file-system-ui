@@ -1,28 +1,14 @@
-import React, {Fragment, ReactElement, ReactNode} from "react";
+import React, {ReactElement, ReactNode} from "react";
 import './Menu.css';
 
 interface MenuProps {
-    open: boolean;
     children: ReactNode
 }
-export const Menu = ({open, children}: MenuProps): ReactElement => {
+
+export const Menu = ({children}: MenuProps): ReactElement => {
     return (
-        <Fragment>
-            {open &&
-                <div className="menu">
-                    {children}
-                </div>
-            }
-        </Fragment>
+        <div className="menu">
+            {children}
+        </div>
     )
 }
-
-/*
-    div     Menu
-    ul      MenuList
-        li (folder, file) MenuItem
-            li
-
-
-Functionalities - delete, rename, add file, add folder
- */

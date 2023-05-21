@@ -2,13 +2,13 @@ import {MdModeEditOutline, MdOutlineFolder, MdOutlineTextSnippet} from "react-ic
 import React, {ChangeEvent, FocusEvent, FormEvent, MouseEvent, useState} from "react";
 import {Option, types} from "./data";
 import './FileSystem.css';
+import {FcFile, FcOpenedFolder} from "react-icons/fc";
 
 interface ItemProps {
     item: Option;
     handleRename?: (item: Option) => void;
     handleFile?: () => void;
     handleFolder?: () => void;
-
 }
 
 const Item = ({item, handleRename, handleFile, handleFolder}: ItemProps) => {
@@ -51,7 +51,7 @@ const Item = ({item, handleRename, handleFile, handleFolder}: ItemProps) => {
     return (
         <div className="item">
             <div>
-                {item.icon}
+                {item.type === types.FILE ? <FcFile/> : <FcOpenedFolder/>}
                 {item.value === "" || isEditMode ?
                     <form onSubmit={handleOnSubmit}>
                         <input value={inputVal}
